@@ -1,0 +1,9 @@
+*swp
+*.backup
+.directory
+*.diff
+*.o
+moc_*
+Makefile
+QMBCFN
+.qmake.stash 
