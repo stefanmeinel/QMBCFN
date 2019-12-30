@@ -46,7 +46,7 @@ using namespace std;
 class QAction;
 class QMenu;
 
-const double version=1.83;
+const double version=1.84;
 
 const int start_n_functions=1;
 const int max_n_functions=1000;
@@ -68,7 +68,7 @@ const double start_num_diff_step=1e-08;
 const int start_svd=0;
 const double start_svd_ratio=0.000001;
 const double start_svd_value=0.000000000001;
-const double start_rescale_value=0.9;
+const double start_rescale_value=0.99;
 
 const int start_steps=100;
 
