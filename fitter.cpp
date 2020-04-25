@@ -196,7 +196,7 @@ bool fitter::set_data(const vector< double >& data, const vector< vector< double
     gsl_permutation_free(perm);
     gsl_matrix_free(work_m);
   }
-  if( (inv_method!=LU_inversion) || singular)
+  if( ((inv_method!=LU_inversion) && (inv_method!=off_diagonal_rescale)) || singular)
   {
     gsl_matrix* work_m=gsl_matrix_alloc(n_fit_points, n_fit_points);
     gsl_matrix_memcpy(work_m, corr);
