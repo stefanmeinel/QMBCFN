@@ -460,8 +460,8 @@ void MainWidget::createGadgets()
   fileTypeLb=new QLabel("Data file type:");
   fileTypeCb=new QComboBox;
   fileTypeCb->addItem("Single fit");
-  fileTypeCb->addItem("Multiple fits, fixed correlation matrix");
-  fileTypeCb->addItem("Multiple fits, varying correlation matrix");
+  fileTypeCb->addItem("Multiple fits, fixed data covariance matrix");
+  fileTypeCb->addItem("Multiple fits, varying data covariance matrix");
   fileTypeCb->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
   connect(fileTypeCb, SIGNAL(currentIndexChanged(int)), this, SLOT(modified_slot()));
   connect(fileTypeCb, SIGNAL(currentIndexChanged(int)), this, SLOT(data_file_modified_slot()));

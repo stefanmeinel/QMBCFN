@@ -56,7 +56,7 @@ class bootstrap_thread : public QThread
     void set_boot_prior(bool pr);
 
     void set_multi_fit_data(const vector< vector< double > >& mfd);
-    void set_multi_fit_correlation_matrix(const vector< vector< vector< double > > >& mfcm);
+    void set_multi_fit_data_covariance_matrix(const vector< vector< vector< double > > >& mfcm);
 
     void set_priors(const vector< double >& prs);
     void set_sigmas(const vector< double >& sgs);
@@ -98,7 +98,7 @@ class bootstrap_thread : public QThread
     exit_code ec;
 
     vector< vector< double > > multi_fit_data;
-    vector< vector< vector< double > > > multi_fit_correlation_matrix;
+    vector< vector< vector< double > > > multi_fit_data_covariance_matrix;
 
     vector< string > parameter_names;
 

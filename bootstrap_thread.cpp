@@ -80,9 +80,9 @@ void bootstrap_thread::set_multi_fit_data(const vector< vector< double > >& mfd)
 }
 
 
-void bootstrap_thread::set_multi_fit_correlation_matrix(const vector< vector< vector< double > > >& mfcm)
+void bootstrap_thread::set_multi_fit_data_covariance_matrix(const vector< vector< vector< double > > >& mfcm)
 {
-  multi_fit_correlation_matrix = mfcm;
+  multi_fit_data_covariance_matrix = mfcm;
 }
 
 
@@ -195,7 +195,7 @@ void bootstrap_thread::run()
     {
       string set_data_message;
       bool status;
-      status = _fitter->set_data(multi_fit_data[boot], multi_fit_correlation_matrix[boot], set_data_message);
+      status = _fitter->set_data(multi_fit_data[boot], multi_fit_data_covariance_matrix[boot], set_data_message);
       if(set_data_message!="")
       {
         stringstream message;

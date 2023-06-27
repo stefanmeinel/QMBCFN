@@ -935,7 +935,7 @@ void MainWindow::fit()
     bootstrapthread -> set_multi_fit_data(multi_fit_data);
     if(mainWidget->get_data_file_type()==2)
     {
-      bootstrapthread -> set_multi_fit_correlation_matrix(multi_fit_correlation_matrix);
+      bootstrapthread -> set_multi_fit_data_covariance_matrix(multi_fit_data_covariance_matrix);
     }
 
     bootstrapthread -> set_file_name(curFile);
@@ -1206,7 +1206,7 @@ void MainWindow::chisqr_start()
 
 // *******************************************************************
 // this function loads the data file; it refreshes the vectors
-// "file_data", "file_correlation_matrix", "mult_file_data, "multi_file_correlation_matrix" (depending on data file type)
+// "file_data", "file_data_covariance_matrix", "mult_file_data, "multi_file_data_covariance_matrix" (depending on data file type)
 // *******************************************************************
 bool MainWindow::load_data_file()
 {
@@ -1269,8 +1269,8 @@ bool MainWindow::load_data_file()
 
   file_data.clear();
   file_data.resize(n_fit_points, 0.0);
-  file_correlation_matrix.clear();
-  file_correlation_matrix.resize(n_fit_points, file_data);
+  file_data_covariance_matrix.clear();
+  file_data_covariance_matrix.resize(n_fit_points, file_data);
 
   int n_samples;
 
@@ -1393,18 +1393,18 @@ bool MainWindow::load_data_file()
         return false;
       }
       m2=function_names_map[name_st];
-      input >> file_correlation_matrix[m1][m2];
+      input >> file_data_covariance_matrix[m1][m2];
       if(input.eof())
       {
         break;
       }
-      file_correlation_matrix[m2][m1]=file_correlation_matrix[m1][m2];
+      file_data_covariance_matrix[m2][m1]=file_data_covariance_matrix[m1][m2];
     }
   }
   else if( mainWidget->get_data_file_type()==2 )
   {
-    multi_file_correlation_matrix.clear();
-    multi_file_correlation_matrix.resize(n_samples, file_correlation_matrix);
+    multi_file_data_covariance_matrix.clear();
+    multi_file_data_covariance_matrix.resize(n_samples, file_data_covariance_matrix);
 
     int m1, m2;
     int sample;
@@ -1444,12 +1444,12 @@ bool MainWindow::load_data_file()
         return false;
       }
       m2=function_names_map[name_st];
-      input >> multi_file_correlation_matrix[sample][m1][m2];
+      input >> multi_file_data_covariance_matrix[sample][m1][m2];
       if(input.eof())
       {
         break;
       }
-      multi_file_correlation_matrix[sample][m2][m1]=multi_file_correlation_matrix[sample][m1][m2];
+      multi_file_data_covariance_matrix[sample][m2][m1]=multi_file_data_covariance_matrix[sample][m1][m2];
     }
   }
 
@@ -1567,7 +1567,7 @@ void MainWindow::write_results()
 
 
 // ***************************************************************************
-// this function makes the vectors "fit_data" and "fit_correlation_matrix"
+// this function makes the vectors "fit_data" and "fit_data_covariance_matrix"
 // and gives them to the fitter
 // ***************************************************************************
 bool MainWindow::set_fit_data()
@@ -1594,7 +1594,7 @@ bool MainWindow::set_fit_data()
   }
 
   vector< double > fit_data(fit_n_functions, 0.0);
-  vector< vector< double > > fit_correlation_matrix(fit_n_functions, fit_data);
+  vector< vector< double > > fit_data_covariance_matrix(fit_n_functions, fit_data);
 
   if( mainWidget->get_data_file_type()==0 )
   {
@@ -1622,21 +1622,21 @@ bool MainWindow::set_fit_data()
     {
       for(int m2=0; m2<fit_n_functions; ++m2)
       {
-        fit_correlation_matrix[m1][m2]=file_correlation_matrix[active_functions[m1]][active_functions[m2]];
+        fit_data_covariance_matrix[m1][m2]=file_data_covariance_matrix[active_functions[m1]][active_functions[m2]];
       }
     }
   }
   else if( mainWidget->get_data_file_type()==2 )
   {
-    multi_fit_correlation_matrix.clear();
-    multi_fit_correlation_matrix.resize(multi_file_data.size(), fit_correlation_matrix);
+    multi_fit_data_covariance_matrix.clear();
+    multi_fit_data_covariance_matrix.resize(multi_file_data.size(), fit_data_covariance_matrix);
     for(int sample=0; sample<multi_file_data.size(); ++sample)
     {
       for(int m1=0; m1<fit_n_functions; ++m1)
       {
         for(int m2=0; m2<fit_n_functions; ++m2)
         {
-          multi_fit_correlation_matrix[sample][m1][m2]=multi_file_correlation_matrix[sample][active_functions[m1]][active_functions[m2]];
+          multi_fit_data_covariance_matrix[sample][m1][m2]=multi_file_data_covariance_matrix[sample][active_functions[m1]][active_functions[m2]];
         }
       }
     }
@@ -1647,15 +1647,15 @@ bool MainWindow::set_fit_data()
   bool status=true;
   if(mainWidget->get_data_file_type()==0)
   {
-    status = _fitter->set_data(fit_data, fit_correlation_matrix, set_data_message);
+    status = _fitter->set_data(fit_data, fit_data_covariance_matrix, set_data_message);
   }
   else if(mainWidget->get_data_file_type()==1)
   {
-    status = _fitter->set_data(multi_fit_data[0], fit_correlation_matrix, set_data_message);
+    status = _fitter->set_data(multi_fit_data[0], fit_data_covariance_matrix, set_data_message);
   }
   else if(mainWidget->get_data_file_type()==2)
   {
-    status = _fitter->set_data(multi_fit_data[0], multi_fit_correlation_matrix[0], set_data_message);
+    status = _fitter->set_data(multi_fit_data[0], multi_fit_data_covariance_matrix[0], set_data_message);
   }
 
   if(set_data_message!="")
@@ -1676,7 +1676,7 @@ bool MainWindow::set_fit_data()
 
   stringstream message;
 
-  message << "(Pseudo-)Inversion method for data correlation matrix: ";
+  message << "(Pseudo-)Inversion method for data covariance matrix: ";
   switch(fitsetWidget->get_inversion_method())
   {
     case LU_inversion:

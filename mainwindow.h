@@ -46,7 +46,7 @@ using namespace std;
 class QAction;
 class QMenu;
 
-const double version=1.85;
+const double version=1.86;
 
 const int start_n_functions=1;
 const int max_n_functions=1000;
@@ -229,11 +229,11 @@ class MainWindow : public QMainWindow
 
     vector< double > file_data;
     vector< vector< double > > multi_file_data;
-    vector< vector< double > > file_correlation_matrix;
-    vector< vector< vector< double > > > multi_file_correlation_matrix;
+    vector< vector< double > > file_data_covariance_matrix;
+    vector< vector< vector< double > > > multi_file_data_covariance_matrix;
 
     vector< vector< double > > multi_fit_data;
-    vector< vector< vector< double > > > multi_fit_correlation_matrix;
+    vector< vector< vector< double > > > multi_fit_data_covariance_matrix;
 
 };
 

@@ -403,7 +403,7 @@ void FitSettingsWidget::createGadgets()
   toleranceLb=new QLabel("Delta(chi^2) tolerance:");
   connect(toleranceEd, SIGNAL(textChanged(const QString&)), this, SLOT(modified_slot()));
 
-  invMethodLb=new QLabel("(Pseudo-)Inversion method for correlation matrix:");
+  invMethodLb=new QLabel("(Pseudo-)Inversion method for data covariance matrix:");
   invMethodCb=new QComboBox;
   invMethodCb->addItem("LU decomposition");
   invMethodCb->addItem("SVD with fixed cut");

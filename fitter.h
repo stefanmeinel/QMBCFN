@@ -62,10 +62,10 @@ class fitter : public QObject
     void set_svd_cut_absolute(double value);
     void set_off_diagonal_rescale_factor(double value);
 
-    bool set_data(const vector< double >& data, const vector< vector< double > >& correlation_matrix, std::string& message);
+    bool set_data(const vector< double >& data, const vector< vector< double > >& data_covariance_matrix, std::string& message);
 //-----------------------------------------------------------------------------
 //    data[n_fit_points]
-//    correlation_matrix[n_fit_points][n_fit_points]
+//    data_covariance_matrix[n_fit_points][n_fit_points]
 //-----------------------------------------------------------------------------
 
     void set_data_only(const vector< double >& data);
@@ -136,7 +136,7 @@ class fitter : public QObject
 
     vector< double > dat;
 
-    gsl_matrix* inv_corr;
+    gsl_matrix* inv_datacov;
 
     gsl_matrix* result_cov;
 
