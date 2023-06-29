@@ -46,7 +46,7 @@ using namespace std;
 class QAction;
 class QMenu;
 
-const double version=1.86;
+const double version=1.9;
 
 const int start_n_functions=1;
 const int max_n_functions=1000;
@@ -77,10 +77,12 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
   public:
-    MainWindow(bool load_file, QString file_name);
+    MainWindow(bool load_file, QString file_name, bool runfit);
 
   signals:
     void lf(QString);
+    void rf();
+    void wr();
 
   protected:
 

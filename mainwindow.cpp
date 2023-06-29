@@ -16,7 +16,7 @@ bool _in(const string& sub, const string& s)
 // *******************************************************************
 // constructor
 // *******************************************************************
-MainWindow::MainWindow(bool load_file, QString file_name)
+MainWindow::MainWindow(bool load_file, QString file_name, bool runfit)
 {
   resize(1200, 640);
 
@@ -51,8 +51,14 @@ MainWindow::MainWindow(bool load_file, QString file_name)
   this -> installEventFilter(file_open_filter);
   connect(file_open_filter, SIGNAL(file_open(QString)), this, SLOT(loadFile(QString)));
 #endif
-
+  
   gsl_set_error_handler_off();
+
+  if(runfit)
+  {
+    emit rf();
+    emit wr();
+  }
 }
 
 
@@ -176,6 +182,8 @@ void MainWindow::create_Widgets_Dialogs()
   connect(mainWidget, SIGNAL(start_fit()), this, SLOT(fit()));
 
   connect(this, SIGNAL(lf(QString)), this, SLOT(loadFile(const QString&)));
+  connect(this, SIGNAL(rf()), this, SLOT(fit()));
+  connect(this, SIGNAL(wr()), this, SLOT(write_results()));
 
   tabWidget = new QTabWidget();
   tabWidget -> addTab(mainWidget, tr("Main"));

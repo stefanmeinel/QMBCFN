@@ -7,11 +7,11 @@ qmbcfn::qmbcfn(int argc, char* argv[]) : QApplication(argc, argv)
   if((this->arguments()).size()==2)
   {
     QString file=(this->arguments()).at(1);
-    mainwin = new MainWindow(true, file);
+    mainwin = new MainWindow(true, file, false);
   }
   else
   {
-    mainwin = new MainWindow(false, "");
+    mainwin = new MainWindow(false, "", false);
   }
   mainwin->show();
 }
